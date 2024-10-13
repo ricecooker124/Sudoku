@@ -3,6 +3,8 @@ package se.kth.simonala.sudoku;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import se.kth.simonala.sudoku.model.SudokuGame;
 import se.kth.simonala.sudoku.model.SudokuUtilities;
@@ -12,14 +14,20 @@ import se.kth.simonala.sudoku.view.GridView;
 import java.io.IOException;
 
 public class Main extends Application {
+
+    private SudokuGame model;
+
     @Override
     public void start(Stage stage) throws IOException {
-        SudokuGame model = new SudokuGame(SudokuUtilities.SudokuLevel.EASY);
+
+        model = new SudokuGame(SudokuUtilities.SudokuLevel.EASY);
+
         SudokuView view = new SudokuView(model);
-        SudokuController controller = new SudokuController(model, view);
+        MenuBar menuBar = view.getMenuBar();
 
-        Scene scene = new Scene(view.getNumberPane());
+        VBox root = new VBox(menuBar, view);
 
+        Scene scene = new Scene(root);
         stage.setTitle("Sudoku");
         stage.setScene(scene);
         stage.sizeToScene();
