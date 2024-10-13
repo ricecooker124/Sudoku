@@ -1,5 +1,7 @@
 package se.kth.simonala.sudoku.model;
 
+import java.util.Random;
+
 public class SudokuUtilities {
 
     public enum SudokuLevel {EASY, MEDIUM, HARD}
@@ -26,7 +28,21 @@ public class SudokuUtilities {
             case HARD: representationString = hard; break;
             default: representationString = medium;
         }
-        return convertStringToIntMatrix(representationString);
+        int[][][] matrix = convertStringToIntMatrix(representationString);
+
+        Random random = new Random();
+        switch (random.nextInt(3)) {
+            case 0:
+                matrix = mirrorHorizontally(matrix);
+                break;
+            case 1:
+                matrix = mirrorVertically(matrix);
+                break;
+            case 2:
+                matrix = swapRandomNumbers(matrix);
+                break;
+        }
+        return matrix;
     }
 
     /**
@@ -134,32 +150,57 @@ public class SudokuUtilities {
                     "154873269" +
                     "728196453";
 
-    public static int[][] returnCopyOfInitial(int[][][] values){
-            int [][] valuesInitial = new int [GRID_SIZE][GRID_SIZE];
+    private static int[][][] mirrorHorizontally(int[][][] matrix) {
+        for (int row = 0; row < GRID_SIZE / 2; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                swapCells(matrix, row, col, GRID_SIZE - row - 1, col);
+            }
+        }
+        return matrix;
+    }
+
+    private static int[][][] mirrorVertically(int[][][] matrix) {
+        for (int col = 0; col < GRID_SIZE / 2; col++) {
             for (int row = 0; row < GRID_SIZE; row++) {
-                for (int col = 0; col < GRID_SIZE; col++) {
-                    valuesInitial[row][col] = values[row][col][0];
+                swapCells(matrix, row, col, row, GRID_SIZE - col - 1);
+            }
+        }
+        return matrix;
+    }
+
+    private static int[][][] swapRandomNumbers(int[][][] matrix) {
+        Random random = new Random();
+        int num1 = random.nextInt(9) + 1;
+        int num2;
+        do {
+            num2 = random.nextInt(9) + 1;
+        } while (num2 == num1);
+
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                if (matrix[row][col][0] == num1) {
+                    matrix[row][col][0] = num2;
+                } else if (matrix[row][col][0] == num2) {
+                    matrix[row][col][0] = num1;
+                }
+                if (matrix[row][col][1] == num1) {
+                    matrix[row][col][1] = num2;
+                } else if (matrix[row][col][1] == num2) {
+                    matrix[row][col][1] = num1;
                 }
             }
-            return valuesInitial;
         }
 
-        public static String formatSudokuMatrix(int[][][] sudokuMatrix) {
-            StringBuilder sb = new StringBuilder();
+        return matrix;
+    }
 
-            for (int row = 0; row < GRID_SIZE; row++) {
-                if (row % SECTION_SIZE == 0 && row != 0) {
-                    sb.append("-".repeat(21)).append("\n"); // Divider mellan sektioner
-                }
-                for (int col = 0; col < GRID_SIZE; col++) {
-                    if (col % SECTION_SIZE == 0 && col != 0) {
-                        sb.append("| ");
-                    }
-                    sb.append(sudokuMatrix[row][col][0] == 0 ? " " : sudokuMatrix[row][col][0]).append(" ");
-                }
-                sb.append("\n");
-            }
-            return sb.toString();
-        }
+    private static void swapCells(int[][][] matrix, int row1, int col1, int row2, int col2) {
+        int tempInitial = matrix[row1][col1][0];
+        int tempSolution = matrix[row1][col1][1];
+        matrix[row1][col1][0] = matrix[row2][col2][0];
+        matrix[row1][col1][1] = matrix[row2][col2][1];
+        matrix[row2][col2][0] = tempInitial;
+        matrix[row2][col2][1] = tempSolution;
+    }
 }
 

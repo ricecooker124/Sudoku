@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import se.kth.simonala.sudoku.model.SudokuGame;
 import se.kth.simonala.sudoku.model.SudokuUtilities;
+import se.kth.simonala.sudoku.view.SudokuView;
+import se.kth.simonala.sudoku.view.GridView;
 
 import java.io.IOException;
 

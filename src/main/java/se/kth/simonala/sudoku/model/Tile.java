@@ -46,10 +46,4 @@ public class Tile {
         this.visibility = visibility;
     }
 
-    public void clear() {
-        if (editable) {
-            this.value = 0;
-            this.visibility = TileVisibility.HIDDEN;
-        }
-    }
 }

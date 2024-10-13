@@ -1,20 +1,23 @@
 package se.kth.simonala.sudoku.view;
 
-public class SudokuView {
+import se.kth.simonala.sudoku.model.SudokuUtilities;
 
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.geometry.Pos;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.input.MouseEvent;
+import javafx.event.EventHandler;
 
-
-
-
-
-
+public class GridView {
 
 
     private Label[][] numberTiles; // the tiles/squares to show in the ui grid
     private GridPane numberPane;
 
     public GridView() {
-        numberTiles = new Label[GRID_SIZE][GRID_SIZE];
+        numberTiles = new Label[SudokuUtilities.GRID_SIZE][SudokuUtilities.GRID_SIZE];
         initNumberTiles();
         // ...
         numberPane = makeNumberPane();
@@ -22,7 +25,7 @@ public class SudokuView {
     }
 
     // use this method to get a reference to the number (called by some other class)
-    public GridPane getNumberPane() {
+    public GridPane getNumberPane(GridPane numberPane) {
         return numberPane;
     }
 
@@ -30,15 +33,15 @@ public class SudokuView {
     private final void initNumberTiles() {
         Font font = Font.font("Monospaced", FontWeight.NORMAL, 20);
 
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
+        for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
+            for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
                 Label tile = new Label(/* add number, or "", to display */); // data from model
                 tile.setPrefWidth(32);
                 tile.setPrefHeight(32);
                 tile.setFont(font);
                 tile.setAlignment(Pos.CENTER);
                 tile.setStyle("-fx-border-color: black; -fx-border-width: 0.5px;"); // css style
-                tile.setOnMouseClicked(tileClickHandler); // add your custom event handler
+                //tile.setOnMouseClicked(tileClickHandler); // add your custom event handler
                 // add new tile to grid
                 numberTiles[row][col] = tile;
             }
@@ -52,17 +55,17 @@ public class SudokuView {
                 "-fx-border-color: black; -fx-border-width: 1.0px; -fx-background-color: white;");
 
         // create the 3*3 sections and add the number tiles
-        for (int srow = 0; srow < SECTIONS_PER_ROW; srow++) {
-            for (int scol = 0; scol < SECTIONS_PER_ROW; scol++) {
+        for (int srow = 0; srow < SudokuUtilities.SECTIONS_PER_ROW; srow++) {
+            for (int scol = 0; scol < SudokuUtilities.SECTIONS_PER_ROW; scol++) {
                 GridPane section = new GridPane();
                 section.setStyle( "-fx-border-color: black; -fx-border-width: 0.5px;");
 
                 // add number tiles to this section
-                for (int row = 0; row < SECTION_SIZE; row++) {
-                    for (int col = 0; col < SECTION_SIZE; col++) {
+                for (int row = 0; row < SudokuUtilities.SECTION_SIZE; row++) {
+                    for (int col = 0; col < SudokuUtilities.SECTION_SIZE; col++) {
                         // calculate which tile and add
                         section.add(
-                                numberTiles[srow * SECTION_SIZE + row][scol * SECTION_SIZE + col],
+                                numberTiles[srow * SudokuUtilities.SECTION_SIZE + row][scol * SudokuUtilities.SECTION_SIZE + col],
                                 col, row);
                     }
                 }
@@ -74,6 +77,8 @@ public class SudokuView {
 
         return root;
     }
+
+
 }
 
 

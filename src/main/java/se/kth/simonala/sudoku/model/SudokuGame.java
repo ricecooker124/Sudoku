@@ -30,6 +30,9 @@ public class SudokuGame {
     }
 
     public Tile getTile(int row, int col) {
+        if (row < 0 || row >= SudokuUtilities.GRID_SIZE || col < 0 || col >= SudokuUtilities.GRID_SIZE) {
+            throw new IllegalArgumentException("Row or column is out of bounds.");
+        }
         return currentBoard[row][col];
     }
 
@@ -44,14 +47,16 @@ public class SudokuGame {
 
     public void clearCell(int row, int col) {
         if (currentBoard[row][col].isEditable()) {
-            currentBoard[row][col].clear();
+            currentBoard[row][col].setValue(0);
+            currentBoard[row][col].setVisibility(TileVisibility.HIDDEN);
         }
     }
 
     public void resetBoard() {
         for (int i = 0; i < SudokuUtilities.GRID_SIZE; i++) {
             for (int j = 0; j < SudokuUtilities.GRID_SIZE; j++) {
-                clearCell(i, j);
+                currentBoard[i][j].setValue(0);
+                currentBoard[i][j].setVisibility(TileVisibility.HIDDEN);
             }
         }
     }
@@ -118,6 +123,7 @@ public class SudokuGame {
             int row = randomCell[0];
             int col = randomCell[1];
             currentBoard[row][col].setValue(currentBoard[row][col].getCorrectValue());
+            currentBoard[row][col].setVisibility(TileVisibility.SHOWN);
         }
     }
 
