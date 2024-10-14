@@ -25,7 +25,7 @@ public class GridView {
     }
 
     // use this method to get a reference to the number (called by some other class)
-    public GridPane getNumberPane(GridPane numberPane) {
+    public GridPane getNumberPane() {
         return numberPane;
     }
 
@@ -77,8 +77,6 @@ public class GridView {
 
         return root;
     }
-
-
 }
 
 
