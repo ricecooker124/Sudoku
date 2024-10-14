@@ -13,22 +13,26 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import se.kth.simonala.sudoku.model.ModelFacade;
 import se.kth.simonala.sudoku.model.SudokuGame;
 
 import java.util.ArrayList;
 
 public class SudokuView extends BorderPane {
 
-    private SudokuGame model;
+    private ModelFacade model;
     private MenuBar menuBar;
     private GridView gridView;
     private Button checkButton, hintButton;
 
-    public SudokuView(SudokuGame model) {
+    public SudokuView(ModelFacade model) {
         super();
         this.model = model;
 
-        gridView = new GridView();
+        Controller controller = new Controller(model, this);
+        createMenuBar(controller);
+
+        gridView = new GridView(controller);
         this.setCenter(gridView.getNumberPane());
 
         this.checkButton = new Button("Check");
@@ -52,9 +56,6 @@ public class SudokuView extends BorderPane {
         }
 
         this.setRight(numberButtons);
-
-        Controller controller = new Controller(model, this);
-        createMenuBar(controller);
     }
 
     private void createMenuBar(Controller controller) {
@@ -96,7 +97,7 @@ public class SudokuView extends BorderPane {
 
 
         Menu sudokuMenu = new Menu("Game");
-        MenuItem restartItem = new MenuItem("restart");
+        MenuItem restartItem = new MenuItem("Restart");
         EventHandler<ActionEvent> restartHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import se.kth.simonala.sudoku.model.ModelFacade;
 import se.kth.simonala.sudoku.model.SudokuGame;
 import se.kth.simonala.sudoku.model.SudokuUtilities;
 import se.kth.simonala.sudoku.view.SudokuView;
@@ -15,12 +16,12 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    private SudokuGame model;
+    private ModelFacade model;
 
     @Override
     public void start(Stage stage) throws IOException {
 
-        model = new SudokuGame(SudokuUtilities.SudokuLevel.EASY);
+        model = new ModelFacade(SudokuUtilities.SudokuLevel.EASY);
 
         SudokuView view = new SudokuView(model);
         MenuBar menuBar = view.getMenuBar();

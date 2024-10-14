@@ -16,9 +16,9 @@ public class GridView {
     private Label[][] numberTiles; // the tiles/squares to show in the ui grid
     private GridPane numberPane;
 
-    public GridView() {
+    public GridView(Controller controller) {
         numberTiles = new Label[SudokuUtilities.GRID_SIZE][SudokuUtilities.GRID_SIZE];
-        initNumberTiles();
+        initNumberTiles(controller);
         // ...
         numberPane = makeNumberPane();
         // ...
@@ -30,12 +30,15 @@ public class GridView {
     }
 
     // called by constructor (only)
-    private final void initNumberTiles() {
+    private final void initNumberTiles(Controller controller) {
         Font font = Font.font("Monospaced", FontWeight.NORMAL, 20);
 
         for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
             for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
-                Label tile = new Label(/* add number, or "", to display */); // data from model
+
+                String tileValue = String.valueOf(controller.getTile(row, col).getValue());
+
+                Label tile = new Label(); // data from model
                 tile.setPrefWidth(32);
                 tile.setPrefHeight(32);
                 tile.setFont(font);
