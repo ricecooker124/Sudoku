@@ -14,11 +14,6 @@ public class SudokuGame {
     }
 
     private void initializeBoard(int[][][] initialMatrix) {
-        if (initialMatrix.length != SudokuUtilities.GRID_SIZE ||
-                initialMatrix[0].length != SudokuUtilities.GRID_SIZE ||
-                initialMatrix[0][0].length != 2) {
-            throw new IllegalArgumentException("Invalid initial matrix size.");
-        }
         for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
             for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
                 int initialValue = initialMatrix[row][col][0];
@@ -29,34 +24,35 @@ public class SudokuGame {
         }
     }
 
-    public Tile getTile(int row, int col) {
+    public Tile getTile(int row, int col) throws IllegalArgumentException {
         if (row < 0 || row >= SudokuUtilities.GRID_SIZE || col < 0 || col >= SudokuUtilities.GRID_SIZE) {
             throw new IllegalArgumentException("Row or column is out of bounds.");
         }
         return currentBoard[row][col];
     }
 
-    public void updateBoard(int row, int col, int value) {
-        if (!isDone() && currentBoard[row][col].isEditable()) {
+    public boolean addTile(int row, int col, int value) {
+        if (!isDone() && currentBoard[row][col].isEditable() && !currentBoard[row][col].isFilled()) {
             currentBoard[row][col].setValue(value);
-            currentBoard[row][col].setVisibility(TileVisibility.SHOWN);
-        } else {
-            System.out.println("This tile is not editable.");
+            return true;
         }
+        return false;
     }
 
-    public void clearCell(int row, int col) {
+    public boolean clearCell(int row, int col) {
         if (currentBoard[row][col].isEditable()) {
             currentBoard[row][col].setValue(0);
-            currentBoard[row][col].setVisibility(TileVisibility.HIDDEN);
+            return true;
         }
+        return false;
     }
 
     public void resetBoard() {
         for (int i = 0; i < SudokuUtilities.GRID_SIZE; i++) {
             for (int j = 0; j < SudokuUtilities.GRID_SIZE; j++) {
-                currentBoard[i][j].setValue(0);
-                currentBoard[i][j].setVisibility(TileVisibility.HIDDEN);
+                if (currentBoard[i][j].isEditable()) {
+                    currentBoard[i][j].setValue(0);
+                }
             }
         }
     }
@@ -82,7 +78,7 @@ public class SudokuGame {
         return copy;
     }
 
-    public int[][] getSolution() {
+    public int[][] getSolutionData() {
         int[][] solution = new int[SudokuUtilities.GRID_SIZE][SudokuUtilities.GRID_SIZE];
         for (int i = 0; i < SudokuUtilities.GRID_SIZE; i++) {
             for (int j = 0; j < SudokuUtilities.GRID_SIZE; j++) {
@@ -95,7 +91,7 @@ public class SudokuGame {
     public boolean check() {
         for (int i = 0; i < SudokuUtilities.GRID_SIZE; i++) {
             for (int j = 0; j < SudokuUtilities.GRID_SIZE; j++) {
-                if (currentBoard[i][j].getVisibility() == TileVisibility.SHOWN) {
+                if (currentBoard[i][j].isFilled()) {
                     if (currentBoard[i][j].getValue() != currentBoard[i][j].getCorrectValue()) {
                         return false;
                     }
@@ -123,7 +119,6 @@ public class SudokuGame {
             int row = randomCell[0];
             int col = randomCell[1];
             currentBoard[row][col].setValue(currentBoard[row][col].getCorrectValue());
-            currentBoard[row][col].setVisibility(TileVisibility.SHOWN);
         }
     }
 

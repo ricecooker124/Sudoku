@@ -12,24 +12,20 @@ public class ModelFacade {
         return model.getTile(row, col);
     }
 
-    public void updateBoard(int row, int col, int value) {
-        model.updateBoard(row, col, value);
+    public boolean addNewTile(int row, int col, int value) {
+        return model.addTile(row, col, value);
     }
 
-    public void clearCell(int row, int col) {
-        model.clearCell(row, col);
+    public boolean clearCell(int row, int col) {
+        return model.clearCell(row, col);
     }
 
     public void resetBoard() {
         model.resetBoard();
     }
 
-    public boolean check() {
-        return model.check();
-    }
-
-    public void getHint() {
-        model.getHint();
+    public void isDone() {
+        model.isDone();
     }
 
     public int[][] getBoardData() {
@@ -37,6 +33,15 @@ public class ModelFacade {
     }
 
     public int[][] getSolution() {
-        return model.getSolution();
+        return model.getSolutionData();
+    }
+
+
+    public boolean check() {
+        return model.check();
+    }
+
+    public void getHint() {
+        model.getHint();
     }
 }

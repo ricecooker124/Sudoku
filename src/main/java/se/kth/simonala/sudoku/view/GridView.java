@@ -7,16 +7,17 @@ import javafx.scene.layout.GridPane;
 import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.input.MouseEvent;
-import javafx.event.EventHandler;
 
 public class GridView {
 
 
     private Label[][] numberTiles; // the tiles/squares to show in the ui grid
     private GridPane numberPane;
+    //private SudokuView view;
+    private int selectedNumber = 0; // currently selected number
 
-    public GridView(Controller controller) {
+    public GridView(Controller controller, SudokuView view) {
+        //this.view = view;
         numberTiles = new Label[SudokuUtilities.GRID_SIZE][SudokuUtilities.GRID_SIZE];
         initNumberTiles(controller);
         // ...
@@ -35,20 +36,54 @@ public class GridView {
 
         for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
             for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
+                int tileValue = controller.getTile(row, col).getValue();
+                String displayValue = (tileValue == 0) ? "" : String.valueOf(tileValue);
+                Label tile = new Label(displayValue); // data from model
 
-                String tileValue = String.valueOf(controller.getTile(row, col).getValue());
 
-                Label tile = new Label(); // data from model
                 tile.setPrefWidth(32);
                 tile.setPrefHeight(32);
                 tile.setFont(font);
                 tile.setAlignment(Pos.CENTER);
                 tile.setStyle("-fx-border-color: black; -fx-border-width: 0.5px;"); // css style
                 //tile.setOnMouseClicked(tileClickHandler); // add your custom event handler
+                setupTileClickHandler(tile, controller, row, col);
                 // add new tile to grid
                 numberTiles[row][col] = tile;
             }
         }
+    }
+
+    private void setupTileClickHandler(Label tile, Controller controller, int row, int col) {
+        tile.setOnMouseClicked(event -> {
+            boolean anyAction = controller.handleNewNumber(row, col, selectedNumber);
+            if (anyAction) {
+                if (selectedNumber == 0) {
+                    tile.setText("");
+                } else {
+                    tile.setText(String.valueOf(selectedNumber));
+                }
+            }
+        });
+    }
+
+    public void updateTile(int row, int col, String value) {
+        Label label = numberTiles[row][col];
+        label.setText(value);
+    }
+
+    public void refreshBoard(Controller controller) {
+        for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
+            for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
+                int value = controller.getTile(row, col).getValue();  // Get the tile's value from the model
+                String displayValue = value == 0 ? "" : String.valueOf(value);
+                updateTile(row, col, displayValue);
+            }
+        }
+    }
+
+    public void setSelectedNumber(int number) {
+        this.selectedNumber = number;
     }
 
     private final GridPane makeNumberPane() {
