@@ -1,5 +1,7 @@
 package se.kth.simonala.sudoku.model;
 
+import java.util.List;
+
 public class ModelFacade {
 
     private SudokuGame model;
@@ -10,15 +12,21 @@ public class ModelFacade {
         this.currentDifficulty = level;
     }
 
+    public SudokuGame getCurrentGame() {
+        return model;
+    }
+
+    public void setCurrentGame(SudokuGame game) {
+        this.model = game;
+    }
+
     public void generateNewGame(SudokuUtilities.SudokuLevel level) {
         this.currentDifficulty = level;
-        //this.model = SudokuUtilities.generateNewGame(level);
     }
 
     public void restartGame() {
         if (currentDifficulty != null) {
             this.model = new SudokuGame(currentDifficulty);
-            //this.model = SudokuUtilities.generateNewGame(currentDifficulty);
         }
     }
 
@@ -55,7 +63,7 @@ public class ModelFacade {
     }
 
 
-    public boolean check() {
+    public List<int[]> check() {
         return model.check();
     }
 

@@ -4,6 +4,8 @@ import se.kth.simonala.sudoku.model.ModelFacade;
 import se.kth.simonala.sudoku.model.SudokuUtilities;
 import se.kth.simonala.sudoku.model.Tile;
 
+import java.util.List;
+
 public class Controller {
 
     private ModelFacade model;
@@ -67,7 +69,7 @@ public class Controller {
         return model.getSolution();
     }
 
-    public boolean handleCheck() {
+    public List<int[]> handleCheck() {
         return model.check();
     }
 

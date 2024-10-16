@@ -88,17 +88,19 @@ public class SudokuGame {
         return solution;
     }
 
-    public boolean check() {
-        for (int i = 0; i < SudokuUtilities.GRID_SIZE; i++) {
-            for (int j = 0; j < SudokuUtilities.GRID_SIZE; j++) {
-                if (currentBoard[i][j].isFilled()) {
-                    if (currentBoard[i][j].getValue() != currentBoard[i][j].getCorrectValue()) {
-                        return false;
+    public List<int[]> check() {
+        List<int[]> wrongTiles = new ArrayList<>();
+
+        for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
+            for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
+                if (currentBoard[row][col].isFilled()) {
+                    if (currentBoard[row][col].getValue() != currentBoard[row][col].getCorrectValue()) {
+                        wrongTiles.add(new int[]{row, col});
                     }
                 }
             }
         }
-        return true;
+        return wrongTiles;
     }
 
     public void getHint() {

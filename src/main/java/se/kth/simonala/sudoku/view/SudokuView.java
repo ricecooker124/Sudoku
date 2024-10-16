@@ -16,10 +16,16 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import se.kth.simonala.sudoku.model.FileHandler;
 import se.kth.simonala.sudoku.model.ModelFacade;
 import se.kth.simonala.sudoku.model.SudokuGame;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SudokuView extends BorderPane {
 
@@ -87,16 +93,15 @@ public class SudokuView extends BorderPane {
 
     public void addEventHandlers(Controller controller) {
         EventHandler<ActionEvent> checkHandler = new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                List<int[]> wrongTiles = controller.handleCheck();
+                gridView.highlightIncorrectCells(wrongTiles);
             }
         };
         checkButton.addEventHandler(ActionEvent.ACTION, checkHandler);
 
         EventHandler<ActionEvent> hintHandler = new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent actionEvent) {
                 controller.handleHint();
@@ -108,22 +113,39 @@ public class SudokuView extends BorderPane {
     private void createMenuBar(Controller controller) {
         Menu fileMenu = new Menu("File");
         MenuItem loadItem = new MenuItem("Load game");
-        EventHandler<ActionEvent> loadHandler = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                System.exit(0);
+        loadItem.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open saved Sudoku puzzle");
+
+            File file = fileChooser.showOpenDialog(new Stage());
+
+            if(file != null) {
+                try {
+                    SudokuGame loadedGame = FileHandler.loadFromFile(file);
+                    model.setCurrentGame(loadedGame); // Uppdatera model med det laddade spelet
+                    gridView.refreshBoard(controller);
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace(); // Hantera fel
+                }
             }
-        };
-        loadItem.addEventHandler(ActionEvent.ACTION, loadHandler);
+        });
 
         MenuItem saveItem = new MenuItem("Save game");
-        EventHandler<ActionEvent> saveHandler = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                System.exit(0);
+        saveItem.setOnAction(event ->{
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Sudoku game");
+            File file = fileChooser.showSaveDialog(new Stage());
+
+            if(file != null){
+                try{
+                    SudokuGame currentGame = model.getCurrentGame();
+                    FileHandler.saveToFile(file, currentGame);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
             }
-        };
-        saveItem.addEventHandler(ActionEvent.ACTION, saveHandler);
+            System.exit(0);
+        });
 
         MenuItem exitItem = new MenuItem("Exit");
         EventHandler<ActionEvent> exitHandler = new EventHandler<ActionEvent>() {
@@ -146,9 +168,6 @@ public class SudokuView extends BorderPane {
         };
         restartItem.addEventHandler(ActionEvent.ACTION, restartHandler);
 
-
-
-
         MenuItem difficultyItem = new MenuItem("Difficulty level");
         EventHandler<ActionEvent> difficultyHandler = new EventHandler<ActionEvent>() {
             @Override
@@ -159,7 +178,6 @@ public class SudokuView extends BorderPane {
         difficultyItem.addEventHandler(ActionEvent.ACTION, difficultyHandler);
 
         sudokuMenu.getItems().addAll(restartItem, difficultyItem);
-
 
         Menu helpMenu = new Menu("Help");
         MenuItem clearItem = new MenuItem("Clear");
@@ -175,7 +193,8 @@ public class SudokuView extends BorderPane {
         EventHandler<ActionEvent> progressHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                List<int[]> wrongTiles = controller.handleCheck();
+                gridView.highlightIncorrectCells(wrongTiles);
             }
         };
         progressItem.addEventHandler(ActionEvent.ACTION, progressHandler);
