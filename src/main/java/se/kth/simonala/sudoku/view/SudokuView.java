@@ -2,20 +2,13 @@ package se.kth.simonala.sudoku.view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import se.kth.simonala.sudoku.model.FileHandler;
@@ -24,7 +17,6 @@ import se.kth.simonala.sudoku.model.SudokuGame;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SudokuView extends BorderPane {
@@ -168,16 +160,36 @@ public class SudokuView extends BorderPane {
         };
         restartItem.addEventHandler(ActionEvent.ACTION, restartHandler);
 
-        MenuItem difficultyItem = new MenuItem("Difficulty level");
-        EventHandler<ActionEvent> difficultyHandler = new EventHandler<ActionEvent>() {
+        Menu difficultySubMenu = new Menu("Difficulty level");
+        MenuItem easyItem = new MenuItem("Easy");
+        MenuItem mediumItem = new MenuItem("Medium");
+        MenuItem hardItem = new MenuItem("Hard");
+
+        EventHandler<ActionEvent> easyHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                controller.handleNewDifficulty("Easy");
             }
         };
-        difficultyItem.addEventHandler(ActionEvent.ACTION, difficultyHandler);
+        difficultySubMenu.addEventHandler(ActionEvent.ACTION, easyHandler);
 
-        sudokuMenu.getItems().addAll(restartItem, difficultyItem);
+        EventHandler<ActionEvent> mediumHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                controller.handleNewDifficulty("Medium");
+            }
+        };
+        difficultySubMenu.addEventHandler(ActionEvent.ACTION, mediumHandler);
+
+        EventHandler<ActionEvent> hardHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                controller.handleNewDifficulty("Hard");
+            }
+        };
+        difficultySubMenu.addEventHandler(ActionEvent.ACTION, hardHandler);
+        difficultySubMenu.getItems().addAll(easyItem, mediumItem, hardItem);
+        sudokuMenu.getItems().addAll(restartItem, difficultySubMenu);
 
         Menu helpMenu = new Menu("Help");
         MenuItem clearItem = new MenuItem("Clear");

@@ -38,7 +38,7 @@ public class GridView {
 
         for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
             for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
-                int tileValue = controller.getTile(row, col).getValue();
+                int tileValue = controller.getTileValue(row, col);
                 String displayValue = (tileValue == 0) ? "" : String.valueOf(tileValue);
                 Label tile = new Label(displayValue); // data from model
 
@@ -85,7 +85,7 @@ public class GridView {
     public void refreshBoard(Controller controller) {
         for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
             for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
-                int value = controller.getTile(row, col).getValue();  // Get the tile's value from the model
+                int value = controller.getTileValue(row, col);  // Get the tile's value from the model
                 String displayValue = value == 0 ? "" : String.valueOf(value);
                 updateTile(row, col, displayValue);
             }

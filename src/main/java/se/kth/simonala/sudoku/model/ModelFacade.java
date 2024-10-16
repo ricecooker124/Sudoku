@@ -30,6 +30,16 @@ public class ModelFacade {
         }
     }
 
+    public void assignNewLevel(String level) {
+        if (level.compareTo("Easy")==0) {
+            this.model = new SudokuGame(SudokuUtilities.SudokuLevel.EASY);
+        } else if (level.compareTo("Medium")==0) {
+            this.model = new SudokuGame(SudokuUtilities.SudokuLevel.MEDIUM);
+        } else {
+            this.model = new SudokuGame(SudokuUtilities.SudokuLevel.HARD);
+        }
+    }
+
     public int[][] getBoard() {
         return model.getBoardData();
     }

@@ -1,8 +1,6 @@
 package se.kth.simonala.sudoku.view;
 
 import se.kth.simonala.sudoku.model.ModelFacade;
-import se.kth.simonala.sudoku.model.SudokuUtilities;
-import se.kth.simonala.sudoku.model.Tile;
 
 import java.util.List;
 
@@ -22,8 +20,14 @@ public class Controller {
         view.getGridView().refreshBoard(this);
     }
 
-    public Tile getTile(int row, int col) {
-        return model.getTile(row, col);
+    public void handleNewDifficulty(String level) {
+        model.assignNewLevel(level);
+        view.updateGrid(model.getBoard());
+        view.getGridView().refreshBoard(this);
+    }
+
+    public int getTileValue(int row, int col) {
+        return model.getTile(row, col).getValue();
     }
 
     public boolean handleNewNumber(int row, int col, int value) {
