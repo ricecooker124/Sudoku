@@ -4,6 +4,8 @@ import se.kth.simonala.sudoku.model.ModelFacade;
 
 import java.util.List;
 
+import java.util.List;
+
 public class Controller {
 
     private ModelFacade model;
