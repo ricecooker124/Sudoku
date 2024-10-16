@@ -8,6 +8,8 @@ import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.util.List;
+
 public class GridView {
 
 
@@ -92,6 +94,26 @@ public class GridView {
 
     public void setSelectedNumber(int number) {
         this.selectedNumber = number;
+    }
+
+    public void highlightIncorrectCells(List<int[]> incorrectCells) {
+        // Återställ alla celler till vit bakgrund först
+        resetTileStyles();
+
+        // Markera alla felaktiga celler med röd bakgrund
+        for (int[] cell : incorrectCells) {
+            int row = cell[0];
+            int col = cell[1];
+            numberTiles[row][col].setStyle("-fx-background-color: red; -fx-border-color: black;");
+        }
+    }
+
+    public void resetTileStyles() {
+        for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
+            for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {
+                numberTiles[row][col].setStyle("-fx-background-color: white; -fx-border-color: black;");
+            }
+        }
     }
 
     private final GridPane makeNumberPane() {
