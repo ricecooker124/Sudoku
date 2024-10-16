@@ -121,5 +121,4 @@ public class SudokuGame {
             currentBoard[row][col].setValue(currentBoard[row][col].getCorrectValue());
         }
     }
-
 }

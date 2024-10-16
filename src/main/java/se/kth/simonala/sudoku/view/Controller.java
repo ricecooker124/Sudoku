@@ -1,6 +1,7 @@
 package se.kth.simonala.sudoku.view;
 
 import se.kth.simonala.sudoku.model.ModelFacade;
+import se.kth.simonala.sudoku.model.SudokuUtilities;
 import se.kth.simonala.sudoku.model.Tile;
 
 public class Controller {
@@ -11,6 +12,12 @@ public class Controller {
     public Controller(ModelFacade model, SudokuView view) {
         this.model = model;
         this.view = view;
+    }
+
+    public void handleRestartGame() {
+        model.restartGame();
+        view.updateGrid(model.getBoard());
+        view.getGridView().refreshBoard(this);
     }
 
     public Tile getTile(int row, int col) {

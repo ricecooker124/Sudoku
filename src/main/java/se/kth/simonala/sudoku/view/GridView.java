@@ -72,6 +72,14 @@ public class GridView {
         label.setText(value);
     }
 
+    public void clearBoard() {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                updateTile(row, col, "");
+            }
+        }
+    }
+
     public void refreshBoard(Controller controller) {
         for (int row = 0; row < SudokuUtilities.GRID_SIZE; row++) {
             for (int col = 0; col < SudokuUtilities.GRID_SIZE; col++) {

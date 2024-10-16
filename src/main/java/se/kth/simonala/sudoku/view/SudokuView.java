@@ -41,10 +41,21 @@ public class SudokuView extends BorderPane {
 
         createActionButtons(controller);
         createNumberButtons();
+        addEventHandlers(controller);
     }
 
     public GridView getGridView() {
         return gridView;
+    }
+
+    public void updateGrid(int[][] board) {
+        gridView.clearBoard();  // Clear the current grid before updating
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                int value = board[row][col];
+                gridView.updateTile(row, col, String.valueOf(value)); // Update each tile in the grid
+            }
+        }
     }
 
     private void createActionButtons(Controller controller) {
@@ -79,7 +90,7 @@ public class SudokuView extends BorderPane {
 
             @Override
             public void handle(ActionEvent actionEvent) {
-                //controller.handleClear();
+
             }
         };
         checkButton.addEventHandler(ActionEvent.ACTION, checkHandler);
@@ -100,7 +111,7 @@ public class SudokuView extends BorderPane {
         EventHandler<ActionEvent> loadHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.exit(0); //sav data?
+                System.exit(0);
             }
         };
         loadItem.addEventHandler(ActionEvent.ACTION, loadHandler);
@@ -109,7 +120,7 @@ public class SudokuView extends BorderPane {
         EventHandler<ActionEvent> saveHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.exit(0); //sav data?
+                System.exit(0);
             }
         };
         saveItem.addEventHandler(ActionEvent.ACTION, saveHandler);
@@ -118,7 +129,7 @@ public class SudokuView extends BorderPane {
         EventHandler<ActionEvent> exitHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.exit(0); //sav data?
+                System.exit(0);
             }
         };
         exitItem.addEventHandler(ActionEvent.ACTION, exitHandler);
@@ -130,17 +141,19 @@ public class SudokuView extends BorderPane {
         EventHandler<ActionEvent> restartHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //controller.handleClear();
+                controller.handleRestartGame();
             }
         };
         restartItem.addEventHandler(ActionEvent.ACTION, restartHandler);
+
+
 
 
         MenuItem difficultyItem = new MenuItem("Difficulty level");
         EventHandler<ActionEvent> difficultyHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //controller.handleClear();
+
             }
         };
         difficultyItem.addEventHandler(ActionEvent.ACTION, difficultyHandler);

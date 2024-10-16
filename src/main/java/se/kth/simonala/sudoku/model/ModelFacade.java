@@ -3,9 +3,27 @@ package se.kth.simonala.sudoku.model;
 public class ModelFacade {
 
     private SudokuGame model;
+    private SudokuUtilities.SudokuLevel currentDifficulty;
 
     public ModelFacade(SudokuUtilities.SudokuLevel level) {
         this.model = new SudokuGame(level);
+        this.currentDifficulty = level;
+    }
+
+    public void generateNewGame(SudokuUtilities.SudokuLevel level) {
+        this.currentDifficulty = level;
+        //this.model = SudokuUtilities.generateNewGame(level);
+    }
+
+    public void restartGame() {
+        if (currentDifficulty != null) {
+            this.model = new SudokuGame(currentDifficulty);
+            //this.model = SudokuUtilities.generateNewGame(currentDifficulty);
+        }
+    }
+
+    public int[][] getBoard() {
+        return model.getBoardData();
     }
 
     public Tile getTile(int row, int col) {
