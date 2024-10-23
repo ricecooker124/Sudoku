@@ -1,6 +1,8 @@
 package se.kth.simonala.sudoku.model;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
     private int value;
     private int correctValue;
     private final boolean editable;

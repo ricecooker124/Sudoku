@@ -17,9 +17,10 @@ import se.kth.simonala.sudoku.model.SudokuGame;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
-public class SudokuView extends BorderPane {
+public class SudokuView extends BorderPane implements Serializable {
 
     private ModelFacade model;
     private MenuBar menuBar;
@@ -108,7 +109,8 @@ public class SudokuView extends BorderPane {
         loadItem.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open saved Sudoku puzzle");
-
+            FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Sudoku Files (*.sudoku)", "*.sudoku");
+            fileChooser.getExtensionFilters().add(filter);
             File file = fileChooser.showOpenDialog(new Stage());
 
             if(file != null) {
@@ -126,9 +128,14 @@ public class SudokuView extends BorderPane {
         saveItem.setOnAction(event ->{
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Sudoku game");
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Sudoku Files (*.sudoku)", "*.sudoku");
+            fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showSaveDialog(new Stage());
 
             if(file != null){
+                if (!file.getPath().endsWith(".sudoku")) {
+                    file = new File(file.getPath() + ".sudoku");
+                }
                 try{
                     SudokuGame currentGame = model.getCurrentGame();
                     FileHandler.saveToFile(file, currentGame);
@@ -215,7 +222,7 @@ public class SudokuView extends BorderPane {
         EventHandler<ActionEvent> rulesHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                controller.handleShowRules();
             }
         };
         rulesItem.addEventHandler(ActionEvent.ACTION, rulesHandler);

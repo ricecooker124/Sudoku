@@ -60,8 +60,8 @@ public class ModelFacade {
         model.resetBoard();
     }
 
-    public void isDone() {
-        model.isDone();
+    public boolean isDone() {
+        return model.isDone();
     }
 
     public int[][] getBoardData() {

@@ -42,6 +42,7 @@ public class Controller {
         }
         if (actionTaken) {
             view.getGridView().refreshBoard(this);
+            handleGameDone();
         }
         return actionTaken;
     }
@@ -82,5 +83,15 @@ public class Controller {
     public void handleHint() {
         model.getHint();
         view.getGridView().refreshBoard(this);
+    }
+
+    public void handleShowRules() {
+        AlertView.alertShowRules();
+    }
+
+    private void handleGameDone() {
+        if (model.isDone()) {
+            AlertView.alertGameDone();
+        }
     }
 }

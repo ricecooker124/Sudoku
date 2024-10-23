@@ -98,7 +98,6 @@ public class GridView {
 
     public void highlightIncorrectCells(List<int[]> incorrectCells) {
         // Återställ alla celler till vit bakgrund först
-        resetTileStyles();
 
         // Markera alla felaktiga celler med röd bakgrund
         for (int[] cell : incorrectCells) {

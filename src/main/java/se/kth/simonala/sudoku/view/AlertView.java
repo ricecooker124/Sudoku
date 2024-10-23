@@ -22,40 +22,11 @@ public class AlertView {
         alert.show();
     }
 
-    public static void alertChooseDifficulty(Controller controller) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Choose Difficulty");
-        alert.setHeaderText(null);
-        alert.setContentText("What difficulty do you want to play?");
-
-        ButtonType easyButton = new ButtonType("Easy");
-        ButtonType mediumButton = new ButtonType("Medium");
-        ButtonType hardButton = new ButtonType("Hard");
-
-        alert.getButtonTypes().setAll(easyButton, mediumButton, hardButton);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if (result.isPresent()) {
-            if (result.get() == easyButton) {
-                //controller.setDifficulty(SudokuUtilities.SudokuLevel.EASY);
-            } else if (result.get() == mediumButton) {
-                //controller.setDifficulty(SudokuUtilities.SudokuLevel.MEDIUM);
-            } else if (result.get() == hardButton) {
-                //controller.setDifficulty(SudokuUtilities.SudokuLevel.HARD);
-            }
-        }
-    }
-
-    public static void alertGameDone(boolean gameWon) {
+    public static void alertGameDone() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(("No tiles left"));
         alert.setHeaderText(null);
-        if(gameWon == true) {
-            alert.setContentText("You won!");
-        } else {
-            alert.setContentText("You lost!");
-        }
+        alert.setContentText("You won!");
         alert.show();
     }
 
