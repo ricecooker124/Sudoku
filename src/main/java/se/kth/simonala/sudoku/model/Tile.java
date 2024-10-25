@@ -2,6 +2,10 @@ package se.kth.simonala.sudoku.model;
 
 import java.io.Serializable;
 
+/**
+ * This class represent every tile in a 9x9 sudoku-board.
+ * Each tile has a number and are either shown or hidden, declared by the enum.
+ */
 public class Tile implements Serializable {
     private int value;
     private int correctValue;
@@ -9,6 +13,12 @@ public class Tile implements Serializable {
     private boolean isFilled;
     private TileVisibility visibility;
 
+    /**
+     * The constructor declares the new tile with the variables and the enum.
+     * @param value
+     * @param correctValue
+     * @param editable
+     */
     public Tile(int value, int correctValue, boolean editable) {
         this.value = value;
         this.correctValue = correctValue;
@@ -21,6 +31,11 @@ public class Tile implements Serializable {
         return value != 0;
     }
 
+    /**
+     * Sets the status of the tile as hidden if the number in the tile equals 0, else the status will be set to shown.
+     * @param value
+     * @return the status of the tile.
+     */
     private TileVisibility initVisibilityStatus(int value) {
         if (value == 0) {
             return TileVisibility.HIDDEN;

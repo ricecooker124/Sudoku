@@ -150,6 +150,11 @@ public class SudokuUtilities {
                     "154873269" +
                     "728196453";
 
+    /**
+     *
+     * @param matrix
+     * @return
+     */
     private static int[][][] mirrorHorizontally(int[][][] matrix) {
         for (int row = 0; row < GRID_SIZE / 2; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
@@ -159,6 +164,11 @@ public class SudokuUtilities {
         return matrix;
     }
 
+    /**
+     *
+     * @param matrix
+     * @return
+     */
     private static int[][][] mirrorVertically(int[][][] matrix) {
         for (int col = 0; col < GRID_SIZE / 2; col++) {
             for (int row = 0; row < GRID_SIZE; row++) {
@@ -168,6 +178,11 @@ public class SudokuUtilities {
         return matrix;
     }
 
+    /**
+     *
+     * @param matrix
+     * @return
+     */
     private static int[][][] swapRandomNumbers(int[][][] matrix) {
         Random random = new Random();
         int num1 = random.nextInt(9) + 1;
@@ -194,6 +209,14 @@ public class SudokuUtilities {
         return matrix;
     }
 
+    /**
+     *
+     * @param matrix
+     * @param row1
+     * @param col1
+     * @param row2
+     * @param col2
+     */
     private static void swapCells(int[][][] matrix, int row1, int col1, int row2, int col2) {
         int tempInitial = matrix[row1][col1][0];
         int tempSolution = matrix[row1][col1][1];

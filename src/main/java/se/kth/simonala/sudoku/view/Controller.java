@@ -1,10 +1,13 @@
 package se.kth.simonala.sudoku.view;
 
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import se.kth.simonala.sudoku.model.FileHandler;
 import se.kth.simonala.sudoku.model.ModelFacade;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import java.util.List;
 
 public class Controller {
 
@@ -37,7 +40,7 @@ public class Controller {
         if (value == 0) {
             actionTaken = handleClear(row, col);
         } else {
-            model.addNewTile(row, col, value);
+            actionTaken = model.addNewTile(row, col, value);
             view.getGridView().refreshBoard(this);
         }
         if (actionTaken) {
@@ -76,17 +79,60 @@ public class Controller {
         return model.getSolution();
     }
 
-    public List<int[]> handleCheck() {
-        return model.check();
+    public void handleCheck() {
+        List<int[]> wrongTiles = model.check();
+        view.getGridView().highlightIncorrectCells(wrongTiles);
     }
 
     public void handleHint() {
         model.getHint();
         view.getGridView().refreshBoard(this);
+        handleGameDone();
     }
 
     public void handleShowRules() {
         AlertView.alertShowRules();
+    }
+
+    public void handleExit() {
+        System.exit(0);
+    }
+
+    public void handleLoadGame() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open saved Sudoku puzzle");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sudoku Files (*.sudoku)", "*.sudoku"));
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if (file != null) {
+            try {
+                model.setCurrentGame(FileHandler.loadFromFile(file));
+                view.getGridView().refreshBoard(this);
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void handleSaveGame() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Sudoku game");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sudoku Files (*.sudoku)", "*.sudoku"));
+        File file = fileChooser.showSaveDialog(new Stage());
+
+        if (file != null) {
+            if (!file.getPath().endsWith(".sudoku")) {
+                file = new File(file.getPath() + ".sudoku");
+            }
+            try {
+                FileHandler.saveToFile(file, model.getCurrentGame());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.exit(0);
+
     }
 
     private void handleGameDone() {

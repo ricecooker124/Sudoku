@@ -1,5 +1,6 @@
 package se.kth.simonala.sudoku.view;
 
+import javafx.application.Platform;
 import se.kth.simonala.sudoku.model.SudokuUtilities;
 
 import javafx.scene.control.Label;
@@ -104,6 +105,15 @@ public class GridView {
             int row = cell[0];
             int col = cell[1];
             numberTiles[row][col].setStyle("-fx-background-color: red; -fx-border-color: black;");
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(() -> numberTiles[row][col].setStyle("-fx-background-color: white; -fx-border-color: black;"));
+            }).start();
         }
     }
 
